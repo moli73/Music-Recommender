@@ -1,11 +1,8 @@
 import sys
-def __items__preprocess__(input_filename, output_filename):
+def __rating__preprocess__(input_filename, output_filename):
     '''
         This function is to split the raw trainning and test rating data JSON file
-        The inputfile should in same directory of the python script
-		
-		python items_preprocess.py inputfilename outputfilename
-
+        The filename should include the full directory.
     '''    
     import re
     import json
@@ -44,5 +41,5 @@ def __items__preprocess__(input_filename, output_filename):
     with open(output_filename, 'w') as wf:
         json.dump(data, wf)
 #def test
-#__items__preprocess__('raw_data.txt', 'preprocessed_data.txt')
-__items__preprocess__(sys.argv[1], sys.argv[2])
+#__rating__preprocess__('raw_data.txt', 'preprocessed_data.txt')
+__rating__preprocess__(sys.argv[1], sys.argv[2])

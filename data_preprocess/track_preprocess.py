@@ -1,5 +1,5 @@
 import sys
-def __track__preprocess(input_filename, output_filename):
+def __track__preprocess__(input_filename, output_filename):
     '''
         This function is to split the track data into JSON file
         The inputfile should in same directory of the python script    
@@ -25,5 +25,5 @@ def __track__preprocess(input_filename, output_filename):
     with open(output_filename, 'w') as wf:
         json.dump(data, wf)
 #test trackData preprocess
-#__track__preprocess("testTrackIn.txt", "testTrackOut.txt")
-__track__preprocess(sys.argv[1], sys.argv[2])
+#__track__preprocess__("testTrackIn.txt", "testTrackOut.txt")
+__track__preprocess__(sys.argv[1], sys.argv[2])

@@ -44,5 +44,5 @@ def __items__preprocess__(input_filename, output_filename):
     with open(output_filename, 'w') as wf:
         json.dump(data, wf)
 #def test
-#__items__preprocess__('raw_data.txt', 'preprocessed_data.txt')
+#__items__preprocess__('testItemsIn.txt', 'testItemsOut.txt')
 __items__preprocess__(sys.argv[1], sys.argv[2])

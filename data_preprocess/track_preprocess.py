@@ -2,12 +2,11 @@ import sys
 def __track__preprocess__(input_filename, output_filename):
     '''
         This function is to split the track data into JSON file
-        The inputfile should in same directory of the python script    
+        The inputfile should in same directory of the python script
         python items_preprocess.py input_filename output_filename
     '''
     import re
     import json
-    data = []
     with open(input_filename, 'r') as f:
         for line in f:
             curTrack = {}#the information of current track
@@ -21,9 +20,10 @@ def __track__preprocess__(input_filename, output_filename):
             for i in range(3, len(trackRecord)):
                 genreList.append(trackRecord[i])
             curTrack['genreList'] = genreList
-            data.append(curTrack.copy())
-    with open(output_filename, 'w') as wf:
-        json.dump(data, wf)
+            with open(output_filename, 'a') as wf:
+                json.dump(curTrack, wf)
+                wf.write("\n")
+
 #test trackData preprocess
-#__track__preprocess__("testTrackIn.txt", "testTrackOut.txt")
-__track__preprocess__(sys.argv[1], sys.argv[2])
+__track__preprocess__("testTrackIn.txt", "testTrackOut.json")
+# __track__preprocess__(sys.argv[1], sys.argv[2])

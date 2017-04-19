@@ -3,26 +3,37 @@ def __items__preprocess__(input_filename, output_filename):
     '''
         This function is to split the raw trainning and test rating data JSON file
         The inputfile should in same directory of the python script
-		
+
 		python items_preprocess.py inputfilename outputfilename
 
-    '''    
+    '''
     import re
     import json
     data = []
     userRecord = {}#each user's record of all rating
     with open(input_filename,'r') as f:
+        #read the first line
+        line = f.readline()
+        userRecord["ratings"] = []
+        line_split = re.split("\||\n", line)
+        if '' in line_split:
+            line_split.remove('')
+        userRecord['userID'] = line_split[0]
+        userRecord['numRating'] = line_split[1]
         for line in f:
             if '|' in line:
-                data.append(userRecord.copy())#append former user record to data collection, use the value passing
+                #output the former record
+                with open(output_filename, 'a') as wf:
+                    json.dump(userRecord.copy(), wf)
+                    wf.write("\n")
                 userRecord.clear()#clear the former userRating record
-            
+                #construct the current record
                 userRecord["ratings"] = []
                 line_split = re.split("\||\n", line)
                 if '' in line_split:
                     line_split.remove('')
                 userRecord['userID'] = line_split[0]
-                userRecord['numRating'] = line_split[1]   
+                userRecord['numRating'] = line_split[1]
             else:
                 line_split = re.split("\t|\n", line)
                 if '' in line_split:
@@ -34,15 +45,9 @@ def __items__preprocess__(input_filename, output_filename):
                 curRating['time'] = line_split[3]
                 userRecord["ratings"].append(curRating)
     #store the last user
-    data.append(userRecord.copy())
-    #remove the first null dict
-    data = data[1:]
-        
-    # for rating  in data:
-    #     print(rating)
-    
-    with open(output_filename, 'w') as wf:
-        json.dump(data, wf)
+    with open(output_filename, 'a') as wf:
+        json.dump(userRecord.copy(), wf)
+
 #def test
-#__items__preprocess__('testItemsIn.txt', 'testItemsOut.txt')
-__items__preprocess__(sys.argv[1], sys.argv[2])
+__items__preprocess__('testItemsIn.txt', 'testItemsOut.json')
+# __items__preprocess__(sys.argv[1], sys.argv[2])

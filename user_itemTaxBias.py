@@ -267,7 +267,8 @@ print('the size of album tax biases is: ' + str(len(albumTaxBiases)))
 
 def userTaxBias(userID):
     bu = userBiases[userID]
-    userTaxBiases = {'track':0,'album':0,'artist':0,'genre':0}
+    #initalized by basic user bias 
+    userTaxBiases = {'track':bu,'album':bu,'artist':bu,'genre':bu}
     numTrackRate = 0
     numAlbumRate = 0
     numArtistRate = 0

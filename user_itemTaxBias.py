@@ -316,7 +316,8 @@ print('the number of users in train data is: ' + str(len(userTaxBiases)))
 
 #check the RMSE with full taxonomy bias model
 count = 0
-squareSum = 0
+TaxError = 0
+MeanError = 0
 for review in testDatas:
     userID = review['userID']
     for rating in review['ratings']:
@@ -339,10 +340,13 @@ for review in testDatas:
         #if the current item does not exist in train data, the bias is zero
         else:
             curItemBias = 0
-        squareSum += (aveRate + curItemBias + curUserBias - realRating) ** 2
+        TaxError += (aveRate + curItemBias + curUserBias - realRating) ** 2
+	MeanError += (aveRate - realRating) ** 2
 #         squareSum += (aveRate + userBiases[userID] + curItemBias + curUserBias - realRating) ** 2
 
 
-RMSE = sqrt(squareSum / float(count))
-print('the full taxonomy model RMSE is: ' + str(RMSE))
+Tax_RMSE = sqrt(TaxError / float(count))
+Mean_RMSE = sqrt(MeanError / float(count))
+print('the full taxonomy model RMSE is: ' + str(Tax_RMSE))
+print('the Mean Scroe model RMSE is: ' + str(Mean_RMSE))
 print('the number of reviews in test data is: ' + str(count))

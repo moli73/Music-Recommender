@@ -13,11 +13,68 @@ readData('data_preprocess/trainOut1w.json', trainDatas)
 print("the number of users in trainning data is:" + str(len(trainDatas)) + "\n")
 #print(trainDatas[0])
 
+#read the tracks
+trackDatas = []
+readData('data_preprocess/trackOut.json', trackDatas)
+print('the size of track is: ' + str(len(trackDatas)))
+# print(trackDatas[0])
+
+#construct the dict by trackID
+trackDict = {}
+for track in trackDatas:
+    trackDict[track['trackID']] = track
+print('the number of tracks is: ' + str(len(trackDict)))
+# print(trackDict['0'])
+
+#read the albums
+albumDatas = []
+readData('data_preprocess/albumOut.json', albumDatas)
+print('the size of album is: ' + str(len(albumDatas)))
+# print(albumDatas[0])
+
+#construct the dict by albumID
+albumDict = {}
+for album in albumDatas:
+    albumDict[album['albumID']] = album
+print('the number of albums is: ' + str(len(albumDict)))
+# print(albumDict['9'])
+
 #construct the dict by itemID
 trainReviews = {}#improve the speed of finding
 for review in trainDatas:
     for rating in review["ratings"]:
         itemID = rating["itemID"]
+	# ratings for tracks can influence their albums, artists and genres
+        if itemID in trackDict:
+            track = trackDict[itemID]
+            if track["albumID"] in trainReviews:
+                trainReviews[track["albumID"]].append(rating)
+            else:
+                trainReviews[track["albumID"]] = [rating]
+                
+            if track['artistID'] in trainReviews:
+                    trainReviews[track['artistID']].append(rating)
+            else:
+                    trainReviews[track['artistID']] = [rating]
+
+            for genreID in track['genreList']:
+                if genreID in trainReviews:
+                        trainReviews[genreID].append(rating)
+                else:
+                        trainReviews[genreID] = [rating]
+        #rating for albums can influence their artists and genres
+        elif itemID in albumDict:
+            album = albumDict[itemID]
+            if album['artistID'] in trainReviews:
+                    trainReviews[track['artistID']].append(rating)
+            else:
+                    trainReviews[track['artistID']] = [rating]
+
+            for genreID in album['genreList']:
+                if genreID in trainReviews:
+                        trainReviews[genreID].append(rating)
+                else:
+                        trainReviews[genreID] = [rating]
         if itemID in trainReviews:
             trainReviews[itemID].append(rating)
         else:
@@ -163,19 +220,6 @@ for itemID in genreList:
 		genreBiases[itemID] = 0
 print('the size of genreBiases is: ' + str(len(genreBiases)))
 
-#read the tracks
-trackDatas = []
-readData('data_preprocess/trackOut.json', trackDatas)
-print('the size of track is: ' + str(len(trackDatas)))
-# print(trackDatas[0])
-
-#construct the dict by trackID
-trackDict = {}
-for track in trackDatas:
-    trackDict[track['trackID']] = track
-print('the number of tracks is: ' + str(len(trackDict)))
-# print(trackDict['0'])
-
 #expand the track bias
 def getTaxTrackBias(itemID):
     if itemID in trackBiases:#should check this, since not all track in this partial train data
@@ -216,19 +260,6 @@ for itemID in trainReviews:
         trackTaxBiases[itemID] = getTaxTrackBias(itemID)
 print('the size of track tax biases is: ' + str(len(trackTaxBiases)))
 # print(trackTaxBiases['0'])
-
-#read the albums
-albumDatas = []
-readData('data_preprocess/albumOut.json', albumDatas)
-print('the size of album is: ' + str(len(albumDatas)))
-# print(albumDatas[0])
-
-#construct the dict by albumID
-albumDict = {}
-for album in albumDatas:
-    albumDict[album['albumID']] = album
-print('the number of albums is: ' + str(len(albumDict)))
-# print(albumDict['9'])
 
 #expand the album bias
 def getTaxAlbumBias(itemID):

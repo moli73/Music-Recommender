@@ -24,6 +24,4 @@ def __track__preprocess__(input_filename, output_filename):
                 json.dump(curTrack, wf)
                 wf.write("\n")
 
-#test trackData preprocess
-__track__preprocess__("testTrackIn.txt", "testTrackOut.json")
-# __track__preprocess__(sys.argv[1], sys.argv[2])
+__track__preprocess__("trackData1.txt", "trackOut.json")

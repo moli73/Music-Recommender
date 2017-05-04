@@ -24,6 +24,5 @@ def __album__preprocess__(input_filename, output_filename):
             with open(output_filename, 'a') as wf:
                 json.dump(curAlbum, wf)
                 wf.write('\n')
-#test albumData preprocess
-__album__preprocess__("testAlbumIn.txt", "testAlbumOut.json")
-# __album__preprocess__(sys.argv[1], sys.argv[2])
+
+__album__preprocess__("albumData1.txt", "albumOut.json")

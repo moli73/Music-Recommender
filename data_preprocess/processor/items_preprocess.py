@@ -3,9 +3,7 @@ def __items__preprocess__(input_filename, output_filename):
     '''
         This function is to split the raw trainning and test rating data JSON file
         The inputfile should in same directory of the python script
-
 		python items_preprocess.py inputfilename outputfilename
-
     '''
     import re
     import json
@@ -48,8 +46,6 @@ def __items__preprocess__(input_filename, output_filename):
     with open(output_filename, 'a') as wf:
         json.dump(userRecord.copy(), wf)
 
-#def test
-#__items__preprocess__('testItemsIn.txt', 'testItemsOut.json')
-# __items__preprocess__('trainIdx1.txt', 'trainOut.json')
+__items__preprocess__('trainIdx1.txt', 'trainOut.json')
 __items__preprocess__('testIdx1.txt', 'testOut.json')
-# __items__preprocess__(sys.argv[1], sys.argv[2])
+__items__preprocess__('validationIdx1.txt', 'validationOut.json')
